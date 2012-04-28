@@ -1,0 +1,17 @@
+.hg*
+*.o
+oc
+*.bak
+*~
+*.toc
+*.aux
+*.pdf
+*.dvi
+*.log
+*.idx
+*.out
+*.vrb
+*.snm
+*.nav
+*.swp
+

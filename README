@@ -1,0 +1,63 @@
+------------------------------------------------------------
+ What
+------------------------------------------------------------
+
+a build tool based on godag (http://godag.googlecode.com)
+for c, in c. not the most mature system at the moment.
+
+
+
+
+------------------------------------------------------------
+ Install
+------------------------------------------------------------
+
+ $ make            # will build the binary 'oc'
+
+
+this can be moved somewhere it can be found, i.e.
+inside a directory pointed to by the PATH variable.
+
+
+
+
+------------------------------------------------------------
+ Try
+------------------------------------------------------------
+
+once you have built the binary you can test it out
+
+
+  $ ./oc clean          # removes all the objects generated
+  $ ./oc test           # runs unit-tests
+  $ ./oc help           # prints the help menu
+  $ ./oc -o program     # builds 'oc' and names it 'program'
+
+
+
+
+------------------------------------------------------------
+ Organise
+------------------------------------------------------------
+
+a package in (this context) is a header file and a
+source file, which apart from their suffix has the
+same name and resides in the same directory.
+
+    src/some/path/that.h
+    src/some/path/that.c
+
+these two files would be considered part of the same 
+package, and these are the only two files "that" package
+can contain.
+
+a test package is a normal package which filenames end
+with '_test.h' and '_test.c'. 
+
+    src/some/path/test_that.h
+    src/some/path/test_that.c
+
+this would be considered a test package, and would not
+be compiled during a normal build.
+
+

@@ -1,0 +1,5 @@
+# [ configuration file for oc ]
+#
+# i.e. give this command line option here to be less annoyed
+-l pthread
+
