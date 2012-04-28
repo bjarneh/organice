@@ -20,5 +20,6 @@
 #define parse_options_copt_test_h
 
 int test_copt(int);
+int test_flag(int);
 
 #endif

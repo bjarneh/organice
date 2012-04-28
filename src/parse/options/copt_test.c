@@ -19,6 +19,7 @@
 #include <string.h>
 #include "utilz/handy.h"
 #include "parse/options/copt.h"
+#include "parse/options/flag.h"
 #include "parse/options/copt_test.h"
 
 int test_copt(int verbose){
@@ -46,6 +47,44 @@ int test_copt(int verbose){
 
     o_val = c->get(c, "-output");
     assert_log( !strcmp(o_val, "out"), verbose, "-o != out", &ok);
+
+    return ok;
+};
+
+
+int test_flag(int verbose){
+    
+    int i, conter;
+    int ok = 1;
+    char ** opts;
+
+    struct flag * f = new_str_flag("-f --file");
+    assert_log( ! f->is_bool, verbose, "flag->is_bool", &ok);
+    assert_log( ! f->is_set(f), verbose, "flag->is_set", &ok);
+
+    f->add(f, "abc");
+    assert_log( f->is_set(f), verbose, "! flag->is_set", &ok);
+    assert_log( f->get(f) != NULL, verbose, "flag->get == NULL", &ok);
+    assert_log( !strcmp(f->get(f),"abc"), verbose, "flag->get != abc", &ok);
+
+    conter = 0;
+    for(i = 0; f->flags[i] != NULL; i++){ conter++; }
+    assert_log( conter == 2, verbose, "conter != 2", &ok);
+
+    f->make_fancy(f);
+
+    conter = 0;
+    for(i = 0; f->flags[i] != NULL; i++){ conter++; }
+    assert_log( conter == 6, verbose, "conter != 6", &ok);
+
+    f->add(f, "def");
+
+    opts = f->get_all(f);
+    assert_log( !strcmp(opts[0],"abc"), verbose, "opts[0] != abc", &ok);
+    assert_log( !strcmp(opts[1],"def"), verbose, "opts[1] != def", &ok);
+    assert_log( opts[2] == NULL, verbose, "opts[2] != NULL", &ok);
+
+    f->free(f);
 
     return ok;
 };
