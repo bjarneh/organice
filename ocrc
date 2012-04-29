@@ -1,5 +1,8 @@
 # [ configuration file for oc ]
 #
-# i.e. give this command line option here to be less annoyed
--l pthread
+# we need to link with pthread so to avoid
+# writing -lpthread every time it's placed
+# here. the config file is also named ocrc
+# instead of .ocrc to be less cryptic.
 
+-l pthread
