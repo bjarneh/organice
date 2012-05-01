@@ -20,6 +20,7 @@
 
 \begin{document}
 
+
 %% frontpage no pagenumber
 \thispagestyle{empty}
 
@@ -39,6 +40,21 @@
 %%    \node [scale=64,black] at (0.2,-8.8) {\texttt{c}};
 %%    \node at (5,-20) [color=black!100,scale=1.5] {\texttt{OC manual v0.1}};
 \end{tikzpicture}
+
+
+%% not the most elegant way to clear a page :-)
+\clearpage
+\thispagestyle{empty}
+\mbox{}
+\clearpage
+
+%% the tag says it all
+\tableofcontents
+\clearpage
+
+%%%%%%%%%%% INPUT
+
+\input{gen/about.tex}
 
 
 \end{document}

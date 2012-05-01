@@ -2,7 +2,8 @@
 # Makefile to build oc
 #
 
-CC=gcc
+CC=gcc # clang can be used here as well
+
 
 SRCFILES =	src/lists/vector.c\
 		src/os/specific.c\
@@ -36,7 +37,7 @@ link: compile
 compile: $(OBJFILES)
 
 %.o: %.c
-	@$(CC) -Wall -I src -c $< -o $@
+	@ $(CC) -Wall -I src -c $< -o $@
  
 clean:
-	@rm -rf $(OBJFILES) oc
+	@ rm -rf $(OBJFILES) oc
