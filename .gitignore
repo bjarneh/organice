@@ -1,6 +1,6 @@
 .hg*
 *.o
-oc
+bin/oc
 *.bak
 *~
 *.toc

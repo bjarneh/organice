@@ -259,6 +259,12 @@ void listing(void){
 		for(i = 0; look[i]; i++){ printf(" '%s'", look[i]); }
 		puts("");
 	}
+
+	if(args){
+		printf("%10s  => ", "xargs");
+		for(i = 0; args[i]; i++){ printf(" '%s'", args[i]); }
+		puts("");
+	}
 	
 	exit(0);
 
@@ -286,8 +292,8 @@ void parse_this_config(const char * fname){
 		char ** argv = config2args(fname);
 		if(argv){
 			char ** xargs = c->parse_arr(c, argv);
+            args = add_arr_free(args, xargs);
 			refill_globals();
-			free_strings(xargs);
 			free_strings(argv);
 		}
 	}
@@ -343,13 +349,10 @@ int main(int argc, char ** argv){
 	parse_config();
 
 	// parse command line arguments
-    args = c->parse_argv(c, argc, argv);
+    char ** xargs = c->parse_argv(c, argc, argv);
+    args = add_arr_free(args, xargs);
     refill_globals();
     
-    if(args == NULL){
-        puts("args == NULL");
-    }
-
 	// simple commands (i.e. print stuff)
 	if(global_get_bool("-list")){ listing(); }
 	if(global_get_bool("-help")){ usage(EXIT_SUCCESS); }

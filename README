@@ -12,12 +12,20 @@ for c, in c. not the most mature system at the moment.
  Install
 ------------------------------------------------------------
 
- $ make            # will build the binary 'oc'
+ $ make            # will build the binary in: bin/oc
 
 
 this can be moved somewhere it can be found, i.e.
-inside a directory pointed to by the PATH variable.
+inside a directory pointed to by the PATH variable,
+or the 'bin' directory can be added to the PATH variable.
+the target 'localinstall' will copy the binary to
+$HOME/bin if it exists. 
 
+ $ make localinstall 
+
+is the same as
+
+ $ make && cp bin/oc $HOME/bin
 
 
 
@@ -25,13 +33,14 @@ inside a directory pointed to by the PATH variable.
  Try
 ------------------------------------------------------------
 
-once you have built the binary you can test it out
+once you have built the binary you can test it out.
+these commands assumes 'oc' can be found inside the $PATH
 
 
-  $ ./oc clean          # removes all the objects generated
-  $ ./oc test           # runs unit-tests
-  $ ./oc help           # prints the help menu
-  $ ./oc -o program     # builds 'oc' and names it 'program'
+  $ oc clean          # removes all the objects generated
+  $ oc test           # runs unit-tests
+  $ oc help           # prints the help menu
+  $ oc -o program     # builds 'oc' and names it 'program'
 
 
 

@@ -28,11 +28,13 @@ SRCFILES =	src/lists/vector.c\
 
 OBJFILES = $(subst .c,.o, $(SRCFILES))
 
-
 default: link
 
+localinstall: link
+	@ [ -d "${HOME}/bin" ] && cp bin/oc "${HOME}/bin"
+
 link: compile
-	@ $(CC) $(OBJFILES) -lpthread -o oc
+	@ $(CC) $(OBJFILES) -lpthread -o bin/oc
 
 compile: $(OBJFILES)
 
@@ -40,4 +42,4 @@ compile: $(OBJFILES)
 	@ $(CC) -Wall -I src -c $< -o $@
  
 clean:
-	@ rm -rf $(OBJFILES) oc
+	@ rm -rf $(OBJFILES) bin/oc

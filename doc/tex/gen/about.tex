@@ -7,7 +7,7 @@ as the project changes) and run unit test etc. It is based on
  \href{http://godag.googlecode.com}{godag}, which is a similar
 system for Go. The idea in both cases is to create something similar
 to  \href{https://maven.apache.org}{maven} or  \href{https://ant.apache.org}{ant},
-but with less configuration needed in order to get started.
+but using convension instead of configuration.
 
 
 
@@ -15,11 +15,11 @@ but with less configuration needed in order to get started.
 
 C code is compiled in a rather old fashioned manner, where 
 files literally \texttt{include} other files all over the place recursively,
-and the number of times the same content is read can be massive.
+and the number of times the same content could be read can blow up.
 As Rob Pike stated in his first talk about the Go language, this
-property adds a huge drag in terms of speed, so by avoiding the
-recursive inspection of the source code for all imports they were
-able to compile large projects in very little time.
+property kills performance, so by avoiding the
+recursive inspection of the source code for all imports, Go is
+able to compile much faster than the typical C/C++ compilers could.
 
 
 
@@ -29,11 +29,21 @@ The way disk speed is improving with the SSD's, and the number of
 processors modern computers are shipped with, I'm starting to wonder
 if the out-dated C way of compiling a project is starting to become
 modern again. The compiler only looks at the definitions or header
-files, you really don't need to produce an object file in order to
-satisfy the compiler. This implies that all the compilation can
+files, you really don't need to produce anything in order to satisfy
+the compiler. This implies that all the compilation can
 be started at the same time, there really is no waiting around 
 to produce compiled code that you depend on, since you really just
 assume that this will be available during linking, i.e. you just
 read the header files.
+
+
+
+\subsection{ 32 CPUs or 32 GHz }
+
+We are heading in the direction more CPUs (or cores)
+as supposed to higher frequency (instructions per second).
+Combined with faster disks the old C way of doing things may 
+actually be quite fast afterall, since we can compile 
+everything in parallel, there is nothing to wait for.
 
 
