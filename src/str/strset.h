@@ -15,9 +15,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ------------------------------------------------------------------------
 
-
-#ifndef str_strset_h
-#define str_strset_h
+#pragma once
 
 #include "map/hash.h"
 
@@ -37,4 +35,3 @@ struct strset {
 
 struct strset * new_strset(void);
 
-#endif

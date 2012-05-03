@@ -15,9 +15,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // -----------------------------------------------------------------------
 
-
-#ifndef parse_options_flag_h
-#define parse_options_flag_h
+#pragma once
 
 #include "lists/vector.h"
 
@@ -41,4 +39,3 @@ struct flag {
 struct flag * new_str_flag(const char *);
 struct flag * new_bool_flag(const char *);
 
-#endif

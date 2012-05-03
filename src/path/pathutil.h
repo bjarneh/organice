@@ -15,9 +15,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // -------------------------------------------------------------------------
 
-
-#ifndef path_pathutil_h
-#define path_pathutil_h
+#pragma once
 
 char ** path_split(const char *);
 char *  path_join(const char **);
@@ -25,4 +23,3 @@ char *  path_join_len(const char **, int);
 char *  path_clean(const char *);
 char *	path_from_slash(char *);
 
-#endif

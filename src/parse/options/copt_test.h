@@ -15,11 +15,8 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ------------------------------------------------------------------------
 
-
-#ifndef parse_options_copt_test_h
-#define parse_options_copt_test_h
+#pragma once
 
 int test_copt(int);
 int test_flag(int);
 
-#endif

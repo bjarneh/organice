@@ -15,9 +15,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // -----------------------------------------------------------------------
 
-
-#ifndef parse_options_copt_h
-#define parse_options_copt_h
+#pragma once
 
 #include "map/hash.h"
 #include "lists/vector.h"
@@ -43,5 +41,3 @@ struct copt {
 };
 
 struct copt * new_copt(void);
-
-#endif

@@ -15,8 +15,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // -------------------------------------------------------------------------
  
-#ifndef compiler_dag_h
-#define compiler_dag_h
+#pragma once
 
 #include "map/hash.h"
 #include "compiler/pkg.h"
@@ -45,4 +44,3 @@ struct dag {
 
 struct dag * new_dag();
 
-#endif

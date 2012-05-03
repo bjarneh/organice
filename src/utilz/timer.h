@@ -15,8 +15,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ------------------------------------------------------------------------
 
-#ifndef utilz_timer_h
-#define utilz_timer_h
+#pragma once
 
 #include "map/hash.h"
 
@@ -35,4 +34,3 @@ struct timer {
 
 struct timer * new_timer(void);
 
-#endif

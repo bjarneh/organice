@@ -15,10 +15,6 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ------------------------------------------------------------------------
 
-
-#ifndef map_hash_test_h
-#define map_hash_test_h
+#pragma once
 
 int test_hash(int);
-
-#endif

@@ -14,14 +14,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // -------------------------------------------------------------------------
+//
 
-
-#ifndef list_vector_test_h
-#define list_vector_test_h
+#pragma once
 
 int test_vector_basics(int);
 int test_add_vec(int);
 int test_clone(int);
 int test_to_array(int);
-
-#endif

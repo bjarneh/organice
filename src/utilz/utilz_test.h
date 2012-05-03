@@ -15,14 +15,8 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ------------------------------------------------------------------------
 
-
-#ifndef utilz_utilz_test_h
-#define utilz_utilz_test_h
-
-#include <stdbool.h>
+#pragma once
 
 int test_is_dir(int);
 int test_is_file(int);
 int test_timer(int);
-
-#endif

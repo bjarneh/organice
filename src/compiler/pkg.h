@@ -15,8 +15,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // -------------------------------------------------------------------------
  
-#ifndef compiler_pkg_h
-#define compiler_pkg_h
+#pragma once
 
 #include <time.h>
 
@@ -49,7 +48,5 @@ struct pkg {
 
 struct pkg * new_pkg(char *);
 void		 free_pkg(void *);
-void * pkg_compile_par(void *);
+void *       pkg_compile_par(void *);
 
-
-#endif

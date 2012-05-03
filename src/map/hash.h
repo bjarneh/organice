@@ -15,9 +15,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ------------------------------------------------------------------------
 
-
-#ifndef map_hash_h
-#define map_hash_h
+#pragma once
 
 #include "lists/vector.h"
 
@@ -48,8 +46,8 @@ struct hash * new_hash(void);
 struct hash * new_hash_size(int size);
 
 /*
-*
-* Example:
+
+    Example:
     
     struct hash h = new_hash();
 
@@ -62,9 +60,7 @@ struct hash * new_hash_size(int size);
         printf("this should not happen\n");
     }
 
-*
-*
-*/
 
-#endif
+
+*/
 

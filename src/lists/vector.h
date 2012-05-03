@@ -15,10 +15,8 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // -------------------------------------------------------------------------
 
+#pragma once
 
-
-#ifndef lists_vector_h
-#define lists_vector_h
 
 struct vector {
 	
@@ -90,5 +88,3 @@ Vector Methods:
   free(vector *)                       => free allocated space for vector
 
 */
-
-#endif

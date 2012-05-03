@@ -14,12 +14,9 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // -------------------------------------------------------------------------
- 
 
-#ifndef parse_source_code_h
-#define parse_source_code_h
+#pragma once
 
 char * 	pkg_name_from_fname(const char * root, const char * name);
 char ** get_deps_from_fname(const char * fname);
 
-#endif

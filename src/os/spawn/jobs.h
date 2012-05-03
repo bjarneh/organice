@@ -15,9 +15,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // -----------------------------------------------------------------------
 
-
-#ifndef os_spawn_jobs_h
-#define os_spawn_jobs_h
+#pragma once
 
 struct job {
 
@@ -29,4 +27,3 @@ struct job {
 struct job * new_job(void);
 int 		 spawn_jobs(int, struct job **);
 
-#endif

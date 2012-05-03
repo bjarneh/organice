@@ -15,9 +15,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ------------------------------------------------------------------------
 
-
-#ifndef utilz_global_h
-#define utilz_global_h
+#pragma once
 
 void	global_init(void);
 char *	global_get_str(const char *);
@@ -28,4 +26,3 @@ int		global_get_bool(const char *);
 void	global_set_bool(const char *, int);
 void	global_free(void);
 
-#endif

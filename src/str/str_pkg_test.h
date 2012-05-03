@@ -15,8 +15,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ------------------------------------------------------------------------
 
-#ifndef str_pkg_test_h
-#define str_pkg_test_h
+#pragma once
 
 int test_buffer(int);
 int test_strset(int);
@@ -35,4 +34,3 @@ int test_upto_char(int);
 int test_split_white(int);
 int test_add_arr(int);
 
-#endif

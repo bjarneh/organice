@@ -15,12 +15,8 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // -------------------------------------------------------------------------
 
-
-
-#ifndef path_walk_h
-#define path_walk_h
+#pragma once
 
 char ** path_walk(const char *);
 char ** path_walk_filter(const char *, int (*ok)(const char *));
 
-#endif

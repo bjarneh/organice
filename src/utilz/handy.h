@@ -15,9 +15,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ------------------------------------------------------------------------
 
-
-#ifndef utilz_handy_h
-#define utilz_handy_h
+#pragma once
 
 #include <time.h>
 
@@ -34,4 +32,3 @@ void	spit_bytes(const char *, const char *, size_t);
 char **	config2args(const char *);
 void	mkdir_or_die(const char *);
 
-#endif

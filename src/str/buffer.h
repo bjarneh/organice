@@ -15,9 +15,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ------------------------------------------------------------------------
 
-
-#ifndef str_buffer_h
-#define str_buffer_h
+#pragma once
 
 struct buffer {
 	
@@ -37,4 +35,3 @@ struct buffer {
 struct buffer * new_buffer(void);
 struct buffer * new_buffer_size(int);
 
-#endif

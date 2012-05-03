@@ -15,10 +15,10 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ------------------------------------------------------------------------
 
+#pragma once
+
 #include <string.h>
 
-#ifndef str_stringutil_h
-#define str_stringutil_h
 
 char ** split_str(const char *, const char *);
 char ** split_white(const char *);
@@ -42,4 +42,3 @@ char *	trim_any_str(const char *, const char *);
 char *	reverse_str(const char *);
 size_t	rev_strspn(const char *, const char *);
 
-#endif

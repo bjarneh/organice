@@ -15,8 +15,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ------------------------------------------------------------------------
 
-#ifndef str_strvec_h
-#define str_strvec_h
+#pragma once
 
 #include "lists/vector.h"
 
@@ -39,4 +38,3 @@ struct strvec {
 
 struct strvec * new_strvec(void);
 
-#endif

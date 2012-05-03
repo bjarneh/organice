@@ -15,9 +15,8 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // -----------------------------------------------------------------------
 
+#pragma once
 
-#ifndef os_specific_h
-#define os_specific_h
 
 char * 	dir_sep(void);
 char	dir_sep_char(void);
@@ -28,4 +27,3 @@ char *	os_name(void);
 int		is_windows(void);
 int		run(const char *);
 
-#endif
