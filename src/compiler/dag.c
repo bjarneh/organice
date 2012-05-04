@@ -323,7 +323,6 @@ static void dag_compile_par(struct dag * slf){
 
     if( size_semaphore > 0 ){
         use_semaphore  = 1;
-        printf("use semaphore: %d\n", size_semaphore);
         pkg_sem_init(size_semaphore);
     }
 
