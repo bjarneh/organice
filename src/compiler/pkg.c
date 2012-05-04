@@ -20,6 +20,7 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <regex.h>
+#include <semaphore.h>
 
 #include "os/specific.h"
 #include "compiler/pkg.h"
@@ -31,6 +32,8 @@
 #include "lists/vector.h"
 #include "parse/source/code.h"
 
+// semaphore used when -jobs option is given
+sem_t job_semaphore;
 
 // pkg mehtods
 static void  	pkg_add_file(struct pkg *, const char *);
@@ -46,6 +49,7 @@ static time_t  	pkg_modtime(struct pkg *);
 
 // utility functions
 static char *	test_name_from_signature(const char *);
+
 
 struct pkg * new_pkg(char * n){
 
@@ -233,6 +237,35 @@ void * pkg_compile_par(void * p){
 	
 };
 
+void pkg_sem_init(int size){ 
+
+    int fail;
+
+    fail = sem_init(&job_semaphore, 0, size);
+
+    if(fail){
+        perror("fail to initialize semaphore");
+        panic(NULL, __FILE__, __LINE__);
+    }
+};
+
+void pkg_sem_destroy(void){
+    sem_destroy(&job_semaphore);
+};
+
+void * pkg_compile_par_sem(void * p){
+
+    void * rv;
+
+    sem_wait(&job_semaphore);
+    
+    rv = pkg_compile_par(p);
+
+    sem_post(&job_semaphore);
+
+    return rv;
+
+};
 
 static char ** pkg_get_tests(struct pkg * slf){
 	

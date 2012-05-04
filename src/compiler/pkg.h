@@ -49,4 +49,7 @@ struct pkg {
 struct pkg * new_pkg(char *);
 void		 free_pkg(void *);
 void *       pkg_compile_par(void *);
+void *       pkg_compile_par_sem(void *);
+void         pkg_sem_init(int);
+void         pkg_sem_destroy(void);
 

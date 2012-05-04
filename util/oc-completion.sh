@@ -29,11 +29,11 @@ _oc(){
 
     local cur prev opts oc_long_opts oc_short_opts oc_short_explain oc_special
     # long options
-    oc_long_opts="--help --version --dryrun --print --single --quiet --verbose --clean --static --sort --list --test --match --output --testbin --src --backend"
+    oc_long_opts="--help --version --dryrun --print --single --quiet --verbose --clean --static --sort --list --test --match --output --testbin --src --backend --jobs"
     # short options + explain
-    oc_short_explain="-h[--help] -v[--version] -d[--dryrun] -p[--print] -1[--single] -q[--quiet] -V[--verbose] -c[--clean] -S[--static] -z[--sort] -i[--list] -m[--match] -o[--output] -t[--test] -T[--testbin] -s[--src] -b[--backend]"
+    oc_short_explain="-h[--help] -v[--version] -d[--dryrun] -p[--print] -1[--single] -j[--jobs] -q[--quiet] -V[--verbose] -c[--clean] -S[--static] -z[--sort] -i[--list] -m[--match] -o[--output] -t[--test] -T[--testbin] -s[--src] -b[--backend]"
     # short options
-    oc_short_opts="-h -v[--version] -d -p -1 -q -V -c -S -z -i -m -o -t -T -s -b"
+    oc_short_opts="-h -v[--version] -d -p -j -1 -q -V -c -S -z -i -m -o -t -T -s -b"
 
     oc_special="clean test help print"
 

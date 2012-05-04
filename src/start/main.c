@@ -53,6 +53,7 @@ char * bools[] = {
 // string options
 char * strs[] = {
 	"-src",
+	"-jobs",
 	"-match",
 	"-output",
 	"-testbin",
@@ -87,6 +88,7 @@ char * helpmsg[] = {
     "-d --dryrun    :  print what oc would do",
     "-p --print     :  print package info found",
     "-1 --single    :  do not compile in parallel",
+    "-j --jobs      :  maximum number of parallel jobs",
     "-q --quiet     :  silent unless error occurs",
     "-V --verbose   :  verbose passed to unit-tests",
     "-c --clean     :  delete all generated objects",
@@ -133,6 +135,7 @@ void init(void){
     c->str_option(c, "-l -l=");
     c->str_option_fancy(c, "-o --output");
     c->str_option_fancy(c, "-m --match");
+    c->str_option_fancy(c, "-j --jobs");
     c->str_option_fancy(c, "-T --testbin");
     c->str_option_fancy(c, "-s --src");
     c->str_option_fancy(c, "-b --backend");
@@ -153,6 +156,8 @@ void init(void){
 	
 	// -src does not default to '' but to 'src'
 	global_set_str("-src", "src");	
+	// -jobs defaults to 0, i.e. no limit
+	global_set_str("-jobs", "0");	
 	// -backend defaults to 'gcc'
 	global_set_str("-backend", "gcc");	
 	// -testbin defaults to octest[.exe]

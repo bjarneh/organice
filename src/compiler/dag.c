@@ -316,6 +316,17 @@ static void dag_compile(struct dag * slf){
 
 static void dag_compile_par(struct dag * slf){
 
+    int use_semaphore  = 0;
+    int size_semaphore = 0;
+
+    size_semaphore = atoi(global_get_str("-jobs"));
+
+    if( size_semaphore > 0 ){
+        use_semaphore  = 1;
+        printf("use semaphore: %d\n", size_semaphore);
+        pkg_sem_init(size_semaphore);
+    }
+
 	if(slf->sorted){
 
 		int i, max = 0;
@@ -325,7 +336,11 @@ static void dag_compile_par(struct dag * slf){
 		
 		for(i = 0; i < max; i++){
 			jobs[i] = new_job();
-			jobs[i]->fn = &pkg_compile_par;
+            if( use_semaphore ){
+			    jobs[i]->fn = &pkg_compile_par_sem;
+            }else{
+			    jobs[i]->fn = &pkg_compile_par;
+            }
 			jobs[i]->arg = (void *) slf->sorted[i];
 		}
 		jobs[max] = NULL;
@@ -341,6 +356,10 @@ static void dag_compile_par(struct dag * slf){
 		
 		free(jobs);
 	}
+
+    if(use_semaphore){
+        pkg_sem_destroy();
+    }
 };
 
 static int dag_binary_up2date(struct pkg ** pks, const char * out){
