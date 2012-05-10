@@ -19,16 +19,16 @@
 
 #include <time.h>
 
-int		is_dir(const char *);
-int		is_file(const char *);
+int     is_dir(const char *);
+int     is_file(const char *);
 int     assert_log(int, int, const char *, int *);
-void	panic(const char *, const char *, int);
-time_t	modtime(const char *);
-char *	slurp(const char *, long *);
-char *	slurp_str(const char *);
-char **	slurp_lines(const char *);
-void	spit_str(const char *, const char *);
-void	spit_bytes(const char *, const char *, size_t);
-char **	config2args(const char *);
-void	mkdir_or_die(const char *);
+void    panic(const char *, const char *, int);
+time_t  modtime(const char *);
+char *  slurp(const char *, long *);
+char *  slurp_str(const char *);
+char ** slurp_lines(const char *);
+void    spit_str(const char *, const char *);
+void    spit_bytes(const char *, const char *, size_t);
+char ** config2args(const char *);
+void    mkdir_or_die(const char *);
 

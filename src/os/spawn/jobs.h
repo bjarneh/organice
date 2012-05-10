@@ -25,5 +25,5 @@ struct job {
 };
 
 struct job * new_job(void);
-int 		 spawn_jobs(int, struct job **);
+int          spawn_jobs(int, struct job **);
 

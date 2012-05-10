@@ -31,72 +31,72 @@ static char * import_from_line(char *);
 
 /*
  if ( root == "src" || root == "src/" ) and
- 	( name == "src/path/to/file.c" || name == "src/path/to/file.h")
+    ( name == "src/path/to/file.c" || name == "src/path/to/file.h")
  then
- 		"path/to/file"
+        "path/to/file"
 */
 
 char * pkg_name_from_fname(const char * root, const char * name){
 
-	int len_root, start;
+    int len_root, start;
 
-	if(root != NULL){
-		len_root = strlen(root);
-		start = ( ends_with(root, dir_sep()) )? len_root : len_root + 1;
-	}else{
-		start = 0;
-	}
+    if(root != NULL){
+        len_root = strlen(root);
+        start = ( ends_with(root, dir_sep()) )? len_root : len_root + 1;
+    }else{
+        start = 0;
+    }
 
-	return slice_str(start, (strlen(name) - 2), name);
+    return slice_str(start, (strlen(name) - 2), name);
 };
 
 char ** get_deps_from_fname(const char * fname){
-	
-	char * dep;
-	char ** dependencies = NULL;
-	struct vector * v = new_vector();
-	char ** lines = slurp_lines(fname);
+    
+    char * dep;
+    char ** dependencies = NULL;
+    struct vector * v = new_vector();
+    char ** lines = slurp_lines(fname);
 
-	int i;
-	for(i = 0; lines[i]; i++){
-		dep = import_from_line(lines[i]);
-		if(dep){
-			v->add(v, dep);
-		}
-	}
-	
-	if(v->len > 0){
-		dependencies = calloc(v->len + 1, sizeof(char *));
-		for(i = 0; i < v->len; i++){
-			dependencies[i] = (char *) v->_[i];
-		}
-		dependencies[i] = NULL;
-	}
-	
-	free_strings(lines);
-	v->free(v);
+    int i;
+    for(i = 0; lines[i]; i++){
+        dep = import_from_line(lines[i]);
+        if(dep){
+            v->add(v, dep);
+        }
+    }
+    
+    if(v->len > 0){
+        dependencies = calloc(v->len + 1, sizeof(char *));
+        for(i = 0; i < v->len; i++){
+            dependencies[i] = (char *) v->_[i];
+        }
+        dependencies[i] = NULL;
+    }
+    
+    free_strings(lines);
+    v->free(v);
 
-	return dependencies;
+    return dependencies;
 };
 
 //_____________________________________________util
 
 static char * import_from_line(char * line){
 
-	char * trimmed;
-	char * file_name;
-	char * pkg_name;
-	
-	if(starts_with(line, "#include ")){
-		trimmed = trim_str(&line[8]);
-		if(starts_with(trimmed, "\"") && ends_with(trimmed, "\"")){
-			file_name = trim_any_str(trimmed, "\"");
-			pkg_name  = pkg_name_from_fname(NULL, file_name);
-			free(file_name);
-			free(trimmed);
-			return pkg_name;
-		}
-		free(trimmed);
-	}
-	return NULL;
+    char * trimmed;
+    char * file_name;
+    char * pkg_name;
+    
+    if(starts_with(line, "#include ")){
+        trimmed = trim_str(&line[8]);
+        if(starts_with(trimmed, "\"") && ends_with(trimmed, "\"")){
+            file_name = trim_any_str(trimmed, "\"");
+            pkg_name  = pkg_name_from_fname(NULL, file_name);
+            free(file_name);
+            free(trimmed);
+            return pkg_name;
+        }
+        free(trimmed);
+    }
+    return NULL;
 };

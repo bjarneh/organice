@@ -21,19 +21,19 @@
 
 
 struct strvec {
-	
-	struct vector * v;
-	
-	int		(*len)(struct strvec *);
-	void 	(*add)(struct strvec *, char *);
-	void 	(*add_array)(struct strvec *, char **);
-	char *	(*join)(struct strvec *, const char *);
-	char *	(*str)(struct strvec *);
-	char * 	(*at)(struct strvec *, int);
-	char **	(*to_array)(struct strvec *);
-	void 	(*free)(struct strvec *);
-	void 	(*free_all)(struct strvec *);
-	
+    
+    struct vector * v;
+    
+    int     (*len)(struct strvec *);
+    void    (*add)(struct strvec *, char *);
+    void    (*add_array)(struct strvec *, char **);
+    char *  (*join)(struct strvec *, const char *);
+    char *  (*str)(struct strvec *);
+    char *  (*at)(struct strvec *, int);
+    char ** (*to_array)(struct strvec *);
+    void    (*free)(struct strvec *);
+    void    (*free_all)(struct strvec *);
+    
 };
 
 struct strvec * new_strvec(void);

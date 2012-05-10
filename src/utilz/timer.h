@@ -20,15 +20,15 @@
 #include "map/hash.h"
 
 struct timer {
-	
-	struct hash * h;
-	
-	void	(*start)(struct timer *, const char *);
-	void	(*stop)(struct timer *, const char *);
-	char *	(*str)(struct timer *, const char *);
-	long	(*millis)(struct timer *, const char *);
-	double	(*seconds)(struct timer *, const char *);
-	void	(*free)(struct timer*);
+    
+    struct hash * h;
+    
+    void    (*start)(struct timer *, const char *);
+    void    (*stop)(struct timer *, const char *);
+    char *  (*str)(struct timer *, const char *);
+    long    (*millis)(struct timer *, const char *);
+    double  (*seconds)(struct timer *, const char *);
+    void    (*free)(struct timer*);
 
 };
 

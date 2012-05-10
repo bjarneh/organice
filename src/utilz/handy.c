@@ -45,154 +45,154 @@ int assert_log(int ok, int verbose, const char* info, int * ret){
 };
 
 int is_file(const char * path){
-	if(! path){ return 0; }
-	struct stat st;
-	if(stat(path, &st) != 0){ return 0; }
-	return S_ISREG(st.st_mode);
+    if(! path){ return 0; }
+    struct stat st;
+    if(stat(path, &st) != 0){ return 0; }
+    return S_ISREG(st.st_mode);
 };
 
 int is_dir(const char * path){
-	if(! path){ return 0; }
-	struct stat st;
-	if(stat(path, &st) != 0){ return 0; }
-	return S_ISDIR(st.st_mode);
+    if(! path){ return 0; }
+    struct stat st;
+    if(stat(path, &st) != 0){ return 0; }
+    return S_ISDIR(st.st_mode);
 };
 
 void panic(const char * msg, const char * file, int line){
-	fprintf(stderr,"[ERROR] in %s:%d\n", file, line);
-	if(msg != NULL){ fprintf(stderr,"[ERROR] %s\n", msg); }
-	exit(1);
+    fprintf(stderr,"[ERROR] in %s:%d\n", file, line);
+    if(msg != NULL){ fprintf(stderr,"[ERROR] %s\n", msg); }
+    exit(1);
 };
 
 time_t modtime(const char * path){
-	struct stat st;
-	if(stat(path, &st) != 0){
-		perror(path);
-		panic(NULL, __FILE__, __LINE__);
-	}
-	return st.st_mtime;
+    struct stat st;
+    if(stat(path, &st) != 0){
+        perror(path);
+        panic(NULL, __FILE__, __LINE__);
+    }
+    return st.st_mtime;
 };
 
 char * slurp(const char * fname, long * size){
 
-	size_t ok_read;
-	char * buf	= NULL;
-	FILE * fd = fopen(fname, "rb");
-	
-	if(fd){
-		if( fseek(fd, 0, SEEK_END) != 0 ){
-			perror(fname);
-			panic(NULL, __FILE__, __LINE__);
-		}
-		(*size) = ftell(fd);
-		if( fseek(fd, 0, SEEK_SET) != 0){
-			perror(fname);
-			panic(NULL, __FILE__, __LINE__);
-		}
+    size_t ok_read;
+    char * buf  = NULL;
+    FILE * fd = fopen(fname, "rb");
+    
+    if(fd){
+        if( fseek(fd, 0, SEEK_END) != 0 ){
+            perror(fname);
+            panic(NULL, __FILE__, __LINE__);
+        }
+        (*size) = ftell(fd);
+        if( fseek(fd, 0, SEEK_SET) != 0){
+            perror(fname);
+            panic(NULL, __FILE__, __LINE__);
+        }
 
-		buf = malloc((*size));
+        buf = malloc((*size));
 
-		if(buf != NULL){
-			ok_read = fread(buf, 1, (*size), fd);
-			if(ok_read != (*size)){
-				perror(fname);
-				panic(NULL, __FILE__, __LINE__);
-			}
-		}else{
-			perror(fname);
-			panic(NULL, __FILE__, __LINE__);
-		}
-	}else{
-		perror(fname);
-		panic(NULL, __FILE__, __LINE__);
-	}
-	
-	fclose(fd);
-	
-	return buf;
+        if(buf != NULL){
+            ok_read = fread(buf, 1, (*size), fd);
+            if(ok_read != (*size)){
+                perror(fname);
+                panic(NULL, __FILE__, __LINE__);
+            }
+        }else{
+            perror(fname);
+            panic(NULL, __FILE__, __LINE__);
+        }
+    }else{
+        perror(fname);
+        panic(NULL, __FILE__, __LINE__);
+    }
+    
+    fclose(fd);
+    
+    return buf;
 };
 
 //TODO fixme hack etc
 char * slurp_str(const char * fname){
 
-	long size;
-	char * b = slurp(fname, &size);
-	char * s = calloc(size + 1, sizeof(char));
-	memcpy(s, b, size);
-	
-	free(b);
-	return s;
+    long size;
+    char * b = slurp(fname, &size);
+    char * s = calloc(size + 1, sizeof(char));
+    memcpy(s, b, size);
+    
+    free(b);
+    return s;
 };
 
 char ** slurp_lines(const char * fname){
 
-	long i;
-	long size;
-	char * content = slurp(fname, &size);
-	struct buffer * b = new_buffer();
-	struct vector * v = new_vector();
-	
-	for(i = 0; i < size; i++){
-		if(content[i] == '\n'){
-			v->add(v, b->str(b));
-			b->clear(b);
-		}else{
-			b->add_char(b, content[i]);
-		}
-	}
+    long i;
+    long size;
+    char * content = slurp(fname, &size);
+    struct buffer * b = new_buffer();
+    struct vector * v = new_vector();
+    
+    for(i = 0; i < size; i++){
+        if(content[i] == '\n'){
+            v->add(v, b->str(b));
+            b->clear(b);
+        }else{
+            b->add_char(b, content[i]);
+        }
+    }
 
-	if(b->len > 0){
-		v->add(v, b->str(b));
-	}
-	
-	char ** lines = calloc(v->len +1, sizeof(char *));
-	for(i = 0; i < v->len; i++){
-		lines[i] = (char *) v->_[i];
-	}
+    if(b->len > 0){
+        v->add(v, b->str(b));
+    }
+    
+    char ** lines = calloc(v->len +1, sizeof(char *));
+    for(i = 0; i < v->len; i++){
+        lines[i] = (char *) v->_[i];
+    }
 
-	free(content);
-	b->free(b);
-	v->free(v);
-	
-	return lines;
+    free(content);
+    b->free(b);
+    v->free(v);
+    
+    return lines;
 };
 
 
 void spit_str(const char * fname, const char * content){
-	spit_bytes(fname, content, strlen(content));
+    spit_bytes(fname, content, strlen(content));
 };
 
 
 void spit_bytes(const char * fname, const char * content, size_t size){
-	
-	FILE * fd = fopen(fname, "w");
-	
-	if(fd){
-		
-		if( fwrite(content, 1, size, fd) != size ){
-			perror(fname);
-			panic(NULL, __FILE__, __LINE__);
-		}
+    
+    FILE * fd = fopen(fname, "w");
+    
+    if(fd){
+        
+        if( fwrite(content, 1, size, fd) != size ){
+            perror(fname);
+            panic(NULL, __FILE__, __LINE__);
+        }
 
-		fclose(fd);
+        fclose(fd);
 
-	}else{
-		perror(fname);
-		panic(NULL, __FILE__, __LINE__);
-	}
+    }else{
+        perror(fname);
+        panic(NULL, __FILE__, __LINE__);
+    }
 };
 
 
 char ** config2args(const char * fname){
 
-	if(! is_file(fname) ){ return NULL;	}
-	
-	char ** res   = NULL;
-	char ** lines = slurp_lines(fname);
+    if(! is_file(fname) ){ return NULL; }
+    
+    char ** res   = NULL;
+    char ** lines = slurp_lines(fname);
 
     if(lines){
 
-	    struct strvec * vec = new_strvec();
+        struct strvec * vec = new_strvec();
 
         int i, j;
 
@@ -209,18 +209,18 @@ char ** config2args(const char * fname){
                 free_strings(tokens);
             }
         }
-	    res = vec->to_array(vec);
-	    vec->free_all(vec);
+        res = vec->to_array(vec);
+        vec->free_all(vec);
     }
 
-	free_strings(lines);
-	
-	return res;
+    free_strings(lines);
+    
+    return res;
 };
 
 void mkdir_or_die(const char * path){
-	if(mkdir(path, 0777) != 0){
-		perror(path);
-		panic(NULL, __FILE__, __LINE__);
-	}
+    if(mkdir(path, 0777) != 0){
+        perror(path);
+        panic(NULL, __FILE__, __LINE__);
+    }
 };

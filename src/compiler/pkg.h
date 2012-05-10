@@ -23,31 +23,31 @@
 #include "lists/vector.h"
 
 struct pkg {
-	
-	int		indegree;
-	char * 	name;
-	char * 	h_file; // header file
-	char * 	c_file; // C code
-	char * 	o_file; // object code
-	char * 	args;   // howto compile pkg
+    
+    int     indegree;
+    char *  name;
+    char *  h_file; // header file
+    char *  c_file; // C code
+    char *  o_file; // object code
+    char *  args;   // howto compile pkg
 
-	struct vector * children;
-	struct strset * deps;
-	
-	void		(*add_file)(struct pkg *, const char *);
-	void		(*add_child)(struct pkg *, struct pkg *);
-	void		(*make_args)(struct pkg *, char **);
-	void		(*print)(struct pkg *);
-	int			(*up2date)(struct pkg *);
-	int			(*compile)(struct pkg *);
-	int			(*is_test)(struct pkg *);
-	int			(*is_main)(struct pkg *);
-	char **		(*get_tests)(struct pkg *);
-	time_t		(*modtime)(struct pkg *);
+    struct vector * children;
+    struct strset * deps;
+    
+    void        (*add_file)(struct pkg *, const char *);
+    void        (*add_child)(struct pkg *, struct pkg *);
+    void        (*make_args)(struct pkg *, char **);
+    void        (*print)(struct pkg *);
+    int         (*up2date)(struct pkg *);
+    int         (*compile)(struct pkg *);
+    int         (*is_test)(struct pkg *);
+    int         (*is_main)(struct pkg *);
+    char **     (*get_tests)(struct pkg *);
+    time_t      (*modtime)(struct pkg *);
 };
 
 struct pkg * new_pkg(char *);
-void		 free_pkg(void *);
+void         free_pkg(void *);
 void *       pkg_compile_par(void *);
 void *       pkg_compile_par_sem(void *);
 void         pkg_sem_init(int);

@@ -18,12 +18,12 @@
 #pragma once
 
 
-char * 	dir_sep(void);
-char	dir_sep_char(void);
-char *	path_sep(void);
-char	path_sep_char(void);
-char * 	get_home_env(void);
-char *	os_name(void);
-int		is_windows(void);
-int		run(const char *);
+char *  dir_sep(void);
+char    dir_sep_char(void);
+char *  path_sep(void);
+char    path_sep_char(void);
+char *  get_home_env(void);
+char *  os_name(void);
+int     is_windows(void);
+int     run(const char *);
 

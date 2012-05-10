@@ -22,24 +22,24 @@
 
 struct dag {
 
-	struct hash * pkgs;
-	struct pkg ** sorted;
-	
-	void   (*parse)(struct dag *);
-	void   (*build)(struct dag *, char **);
-	void   (*topsort)(struct dag *);
-	void   (*compile)(struct dag *);
-	void   (*pcompile)(struct dag *);
-	void   (*link)(struct dag *, char *, char *, char **, char **);
-	void   (*clean)(struct dag *);
-	void   (*dryrun)(struct dag *);
-	void   (*sort)(struct dag *);
-	void   (*fancy)(struct dag *);
-	void   (*print)(struct dag *);
-	char * (*add_test)(struct dag *, char **);
-	void   (*unlink_test)(struct dag *, char *);
-	void   (*free)(struct dag *);
-	
+    struct hash * pkgs;
+    struct pkg ** sorted;
+    
+    void   (*parse)(struct dag *);
+    void   (*build)(struct dag *, char **);
+    void   (*topsort)(struct dag *);
+    void   (*compile)(struct dag *);
+    void   (*pcompile)(struct dag *);
+    void   (*link)(struct dag *, char *, char *, char **, char **);
+    void   (*clean)(struct dag *);
+    void   (*dryrun)(struct dag *);
+    void   (*sort)(struct dag *);
+    void   (*fancy)(struct dag *);
+    void   (*print)(struct dag *);
+    char * (*add_test)(struct dag *, char **);
+    void   (*unlink_test)(struct dag *, char *);
+    void   (*free)(struct dag *);
+    
 };
 
 struct dag * new_dag();

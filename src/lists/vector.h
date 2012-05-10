@@ -19,14 +19,14 @@
 
 
 struct vector {
-	
+    
     int             len;
     int             cap;
     void **         _;
     
     void *          (*at) (struct vector *, int pos);
     int             (*add) (struct vector *, void *);
-    void *			(*pop) (struct vector *);
+    void *          (*pop) (struct vector *);
     int             (*add_vector) (struct vector *, struct vector *);
     struct vector * (*clone) (struct vector *);
     void **         (*to_array) (struct vector *);

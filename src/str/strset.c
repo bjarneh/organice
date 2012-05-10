@@ -22,51 +22,51 @@
 
 
 // strset methods
-static void 	strset_add(struct strset *, const char *);
-static int		strset_has(struct strset *, const char *);
-static void		strset_remove(struct strset *, const char *);
-static char **	strset_to_array(struct strset *);
-static void 	strset_clear(struct strset *);
-static void 	strset_free(struct strset *);
+static void     strset_add(struct strset *, const char *);
+static int      strset_has(struct strset *, const char *);
+static void     strset_remove(struct strset *, const char *);
+static char **  strset_to_array(struct strset *);
+static void     strset_clear(struct strset *);
+static void     strset_free(struct strset *);
 
 // constructor
 struct strset * new_strset(void){
-	struct strset * s = malloc(sizeof(struct strset));
-	s->map		= new_hash();
-	s->add		= &strset_add;
-	s->has		= &strset_has;
-	s->remove	= &strset_remove;
-	s->to_array	= &strset_to_array;
-	s->clear	= &strset_clear;
-	s->free		= &strset_free;
-	return s;
+    struct strset * s = malloc(sizeof(struct strset));
+    s->map      = new_hash();
+    s->add      = &strset_add;
+    s->has      = &strset_has;
+    s->remove   = &strset_remove;
+    s->to_array = &strset_to_array;
+    s->clear    = &strset_clear;
+    s->free     = &strset_free;
+    return s;
 };
 
 
 static void strset_add(struct strset * slf, const char * e){
-	slf->map->put(slf->map, e, &(slf->dummy));
+    slf->map->put(slf->map, e, &(slf->dummy));
 };
 
 static int strset_has(struct strset * slf, const char * e){
-	return slf->map->has(slf->map, e);
+    return slf->map->has(slf->map, e);
 };
 
 static void strset_remove(struct strset * slf, const char * e){
-	slf->map->put(slf->map, e, NULL);
+    slf->map->put(slf->map, e, NULL);
 };
 
 static char ** strset_to_array(struct strset * slf){
-	return slf->map->keys(slf->map);
+    return slf->map->keys(slf->map);
 };
 
 static void strset_clear(struct strset * slf){
-	slf->map->free(slf->map);
-	slf->map = new_hash();
+    slf->map->free(slf->map);
+    slf->map = new_hash();
 };
 
 static void strset_free(struct strset * slf){
-	slf->map->free(slf->map);
-	free(slf);
+    slf->map->free(slf->map);
+    free(slf);
 };
 
 

@@ -36,205 +36,205 @@
 sem_t job_semaphore;
 
 // pkg mehtods
-static void  	pkg_add_file(struct pkg *, const char *);
-static void  	pkg_add_child(struct pkg *, struct pkg *);
-static int     	pkg_up2date(struct pkg *);
-static void 	pkg_make_args(struct pkg *, char **);
-static void 	pkg_print(struct pkg *);
-static int  	pkg_compile(struct pkg *);
-static int  	pkg_is_test(struct pkg *);
-static int  	pkg_is_main(struct pkg *);
-static char ** 	pkg_get_tests(struct pkg *);
-static time_t  	pkg_modtime(struct pkg *);
+static void     pkg_add_file(struct pkg *, const char *);
+static void     pkg_add_child(struct pkg *, struct pkg *);
+static int      pkg_up2date(struct pkg *);
+static void     pkg_make_args(struct pkg *, char **);
+static void     pkg_print(struct pkg *);
+static int      pkg_compile(struct pkg *);
+static int      pkg_is_test(struct pkg *);
+static int      pkg_is_main(struct pkg *);
+static char **  pkg_get_tests(struct pkg *);
+static time_t   pkg_modtime(struct pkg *);
 
 // utility functions
-static char *	test_name_from_signature(const char *);
+static char *   test_name_from_signature(const char *);
 
 
 struct pkg * new_pkg(char * n){
 
-	struct pkg * p = malloc(sizeof(struct pkg));
-	
-	p->name		 = n;
-	p->indegree  = 0;
-	p->h_file	 = NULL;
-	p->c_file	 = NULL;
-	p->o_file	 = NULL;
-	p->args		 = NULL;
-	p->children  = new_vector();
-	p->deps		 = new_strset();
-	p->add_file	 = &pkg_add_file;
-	p->add_child = &pkg_add_child;
-	p->make_args = &pkg_make_args;
-	p->up2date	 = &pkg_up2date;
-	p->modtime	 = &pkg_modtime;
-	p->print	 = &pkg_print;
-	p->compile	 = &pkg_compile;
-	p->is_test	 = &pkg_is_test;
-	p->is_main	 = &pkg_is_main;
-	p->get_tests = &pkg_get_tests;
-	
-	return p;
+    struct pkg * p = malloc(sizeof(struct pkg));
+    
+    p->name      = n;
+    p->indegree  = 0;
+    p->h_file    = NULL;
+    p->c_file    = NULL;
+    p->o_file    = NULL;
+    p->args      = NULL;
+    p->children  = new_vector();
+    p->deps      = new_strset();
+    p->add_file  = &pkg_add_file;
+    p->add_child = &pkg_add_child;
+    p->make_args = &pkg_make_args;
+    p->up2date   = &pkg_up2date;
+    p->modtime   = &pkg_modtime;
+    p->print     = &pkg_print;
+    p->compile   = &pkg_compile;
+    p->is_test   = &pkg_is_test;
+    p->is_main   = &pkg_is_main;
+    p->get_tests = &pkg_get_tests;
+    
+    return p;
 };
 
 
 static void pkg_add_file(struct pkg * slf, const char * fname){
 
-	if(ends_with(fname, ".h")){
-		slf->h_file = strdup(fname);
-	}else if(ends_with(fname, ".c")){
-		slf->c_file = strdup(fname);
-	}else{
-		panic("pkg.add_file only allows .h or .c files", __FILE__,__LINE__);
-	}
-	
-	char ** imports = get_deps_from_fname(fname);
+    if(ends_with(fname, ".h")){
+        slf->h_file = strdup(fname);
+    }else if(ends_with(fname, ".c")){
+        slf->c_file = strdup(fname);
+    }else{
+        panic("pkg.add_file only allows .h or .c files", __FILE__,__LINE__);
+    }
+    
+    char ** imports = get_deps_from_fname(fname);
 
-	if(imports){
-		int i;
-		for(i = 0; imports[i]; i++){
-			if(! eq_str(imports[i], slf->name) ){
-				slf->deps->add(slf->deps, imports[i]);
-			}
-		}
-		free_strings(imports);
-	}
+    if(imports){
+        int i;
+        for(i = 0; imports[i]; i++){
+            if(! eq_str(imports[i], slf->name) ){
+                slf->deps->add(slf->deps, imports[i]);
+            }
+        }
+        free_strings(imports);
+    }
 };
 
 static void pkg_add_child(struct pkg * slf, struct pkg * other){
-	slf->children->add(slf->children, other);
+    slf->children->add(slf->children, other);
 };
 
 static void pkg_make_args(struct pkg * slf, char ** xtra){
 
-	if(slf->c_file){
-		// replace .h with .o to create output
-		char * tmp  = strdup(slf->c_file);
-		size_t len  = strlen(tmp);
-		tmp[len-1]  = 'o';
-		slf->o_file = tmp;
+    if(slf->c_file){
+        // replace .h with .o to create output
+        char * tmp  = strdup(slf->c_file);
+        size_t len  = strlen(tmp);
+        tmp[len-1]  = 'o';
+        slf->o_file = tmp;
 
-		struct strvec * v = new_strvec();
+        struct strvec * v = new_strvec();
 
-		v->add(v, global_get_str("-backend"));
-		v->add(v, "-I");
-		v->add(v, global_get_str("-src"));
-		v->add(v, "-c");
-		v->add(v, slf->c_file);
-		//TODO extra arguments go here...
-		if(xtra){
-			int i;
-			for(i = 0; xtra[i]; i++){
-				v->add(v, "-I");
-				v->add(v, xtra[i]);
-			}
-		}
-		v->add(v, "-o");
-		v->add(v, slf->o_file);
+        v->add(v, global_get_str("-backend"));
+        v->add(v, "-I");
+        v->add(v, global_get_str("-src"));
+        v->add(v, "-c");
+        v->add(v, slf->c_file);
+        //TODO extra arguments go here...
+        if(xtra){
+            int i;
+            for(i = 0; xtra[i]; i++){
+                v->add(v, "-I");
+                v->add(v, xtra[i]);
+            }
+        }
+        v->add(v, "-o");
+        v->add(v, slf->o_file);
 
-		slf->args = v->join(v, " ");
+        slf->args = v->join(v, " ");
 
-		v->free(v);
-	}
+        v->free(v);
+    }
 };
 
 static int pkg_up2date(struct pkg * slf){
 
-	time_t mod_c;
-	time_t mod_h;
-	time_t mod_o;
-	
-	if(! slf->c_file){ return 1; }
-	if(! is_file(slf->o_file) ){ return 0; }
-	
-	//mod_h = modtime(slf->h_file);
-	mod_c = modtime(slf->c_file);
-	mod_o = modtime(slf->o_file);
-	
-	if( mod_c <= mod_o ){
-		if( slf->h_file ){
-			mod_h = modtime(slf->h_file);
-			return ( mod_h <= mod_o );
-		}
-		return 1;
-	}
-	
-	return 0;
+    time_t mod_c;
+    time_t mod_h;
+    time_t mod_o;
+    
+    if(! slf->c_file){ return 1; }
+    if(! is_file(slf->o_file) ){ return 0; }
+    
+    //mod_h = modtime(slf->h_file);
+    mod_c = modtime(slf->c_file);
+    mod_o = modtime(slf->o_file);
+    
+    if( mod_c <= mod_o ){
+        if( slf->h_file ){
+            mod_h = modtime(slf->h_file);
+            return ( mod_h <= mod_o );
+        }
+        return 1;
+    }
+    
+    return 0;
 };
 
 static time_t pkg_modtime(struct pkg * slf){
-	if(slf->o_file){
-		return modtime(slf->o_file);
-	}
-	return 0;
+    if(slf->o_file){
+        return modtime(slf->o_file);
+    }
+    return 0;
 };
 
 static void pkg_print(struct pkg * slf){
 
-	printf("\np  %s\n", slf->name);
+    printf("\np  %s\n", slf->name);
 
-	if(slf->h_file != NULL){ printf("f  %s\n", slf->h_file); }
-	if(slf->c_file != NULL){ printf("f  %s\n", slf->c_file); }
+    if(slf->h_file != NULL){ printf("f  %s\n", slf->h_file); }
+    if(slf->c_file != NULL){ printf("f  %s\n", slf->c_file); }
 
-	int i;
-	char ** imports = slf->deps->to_array(slf->deps);
-	
-	if(imports){
+    int i;
+    char ** imports = slf->deps->to_array(slf->deps);
+    
+    if(imports){
 
-		for(i = 0; imports[i]; i++){
-			printf("d  %s\n", imports[i]);
-		}
+        for(i = 0; imports[i]; i++){
+            printf("d  %s\n", imports[i]);
+        }
 
-		free(imports);
-	}
+        free(imports);
+    }
 };
 
 static int pkg_is_test(struct pkg * slf){
 
-	if( slf->h_file && slf->c_file ){
-		return ends_with(slf->h_file, "_test.h") && 
-		       ends_with(slf->c_file, "_test.c");
-	}
-	
-	return 0;
+    if( slf->h_file && slf->c_file ){
+        return ends_with(slf->h_file, "_test.h") && 
+               ends_with(slf->c_file, "_test.c");
+    }
+    
+    return 0;
 };
 
 // TODO fix this stuff
 static int pkg_is_main(struct pkg * slf){
 
-	if( ! slf->h_file ){
-		return ends_with(slf->c_file, "main.c");
-	}
-	
-	return 0;
+    if( ! slf->h_file ){
+        return ends_with(slf->c_file, "main.c");
+    }
+    
+    return 0;
 };
 
 static int pkg_compile(struct pkg * slf){
 
-	int rv;
-	int silent = global_get_bool("-quiet");
+    int rv;
+    int silent = global_get_bool("-quiet");
 
-	if(slf->up2date(slf)) {
-		if(! silent){ printf("up 2 date: %s\n", slf->name); }
-	}else{
-		rv = run(slf->args);
-		if(! silent){ printf("compiling: %s\n", slf->name); }
-		if( rv == -1 ){ panic("pkg_compile: cant fork()", __FILE__,__LINE__);}
-		return rv;
-	}
-	return 0; // OK (nonzero indicates error)
+    if(slf->up2date(slf)) {
+        if(! silent){ printf("up 2 date: %s\n", slf->name); }
+    }else{
+        rv = run(slf->args);
+        if(! silent){ printf("compiling: %s\n", slf->name); }
+        if( rv == -1 ){ panic("pkg_compile: cant fork()", __FILE__,__LINE__);}
+        return rv;
+    }
+    return 0; // OK (nonzero indicates error)
 };
 
 
 void * pkg_compile_par(void * p){
 
-	int * fail = malloc(sizeof(int));
+    int * fail = malloc(sizeof(int));
 
-	struct pkg * pk = (struct pkg *) p;
-	*fail = pk->compile(pk);
-	
-	return (void *) fail;
-	
+    struct pkg * pk = (struct pkg *) p;
+    *fail = pk->compile(pk);
+    
+    return (void *) fail;
+    
 };
 
 void pkg_sem_init(int size){ 
@@ -268,77 +268,77 @@ void * pkg_compile_par_sem(void * p){
 };
 
 static char ** pkg_get_tests(struct pkg * slf){
-	
-	int fail;
-	int i, rv;
-	regex_t re;
-	char * test_name;
-	char ** res = NULL;
-	
-	char * regx = "(int|bool)\\s+test[^\\(]+\\((int|bool)\\)";
-	fail = regcomp(&re, regx, REG_EXTENDED);
-	if(fail){
-		panic("regexp - didn't compile?", __FILE__, __LINE__);
-	}
-	
-	// store names of test functions here
-	struct strvec * sv = new_strvec();
-	// test functions should be writte
-	char ** content = slurp_lines(slf->h_file);
-	
-	for( i = 0; content[i]; i++){
-		
-		rv = regexec(&re, content[i], 0, NULL, 0);
-		
-		if( ! rv ){
-			test_name = test_name_from_signature(content[i]);
-			sv->add(sv, test_name);
-		}else if( rv != REG_NOMATCH ){// stackoverflow.com :-)
-			char msgbuf[200];
-		    regerror(rv, &re, msgbuf, sizeof(msgbuf));
+    
+    int fail;
+    int i, rv;
+    regex_t re;
+    char * test_name;
+    char ** res = NULL;
+    
+    char * regx = "(int|bool)\\s+test[^\\(]+\\((int|bool)\\)";
+    fail = regcomp(&re, regx, REG_EXTENDED);
+    if(fail){
+        panic("regexp - didn't compile?", __FILE__, __LINE__);
+    }
+    
+    // store names of test functions here
+    struct strvec * sv = new_strvec();
+    // test functions should be writte
+    char ** content = slurp_lines(slf->h_file);
+    
+    for( i = 0; content[i]; i++){
+        
+        rv = regexec(&re, content[i], 0, NULL, 0);
+        
+        if( ! rv ){
+            test_name = test_name_from_signature(content[i]);
+            sv->add(sv, test_name);
+        }else if( rv != REG_NOMATCH ){// stackoverflow.com :-)
+            char msgbuf[200];
+            regerror(rv, &re, msgbuf, sizeof(msgbuf));
             fprintf(stderr, "Regex match failed: %s\n", msgbuf);
             panic(NULL, __FILE__, __LINE__);
-		}
-	}
-	
-	// return value != NULL if header file contains tests
-	if(sv->len(sv) > 0){
-		res = sv->to_array(sv);
-	}
-	
-	free_strings(content);
-	regfree(&re);
-	sv->free_all(sv);
-	
-	return res;
+        }
+    }
+    
+    // return value != NULL if header file contains tests
+    if(sv->len(sv) > 0){
+        res = sv->to_array(sv);
+    }
+    
+    free_strings(content);
+    regfree(&re);
+    sv->free_all(sv);
+    
+    return res;
 };
 
 void free_pkg(void * p){
-	
-	struct pkg * slf;
+    
+    struct pkg * slf;
 
-	slf = (struct pkg *) p;
-	
-	slf->children->free(slf->children);
-	slf->deps->free(slf->deps);
+    slf = (struct pkg *) p;
+    
+    slf->children->free(slf->children);
+    slf->deps->free(slf->deps);
 
-	free(slf->name);
-	free(slf->h_file);
-	free(slf->c_file);
-	free(slf->o_file);
-	free(slf->args);
-	free(slf);
+    free(slf->name);
+    free(slf->h_file);
+    free(slf->c_file);
+    free(slf->o_file);
+    free(slf->args);
+    free(slf);
 
 };
 
 //__________________________________________util
 
 static char * test_name_from_signature(const char * s){
-	char * slice = slice_str(4, strlen(s), s);
-	char * fn    = upto_char(slice, '(');
-	char * fn_tr = trim_str(fn);
-	free(slice);
-	free(fn);
-	return fn_tr;
+    char * slice = slice_str(4, strlen(s), s);
+    char * fn    = upto_char(slice, '(');
+    char * fn_tr = trim_str(fn);
+    free(slice);
+    free(fn);
+    return fn_tr;
 };
 

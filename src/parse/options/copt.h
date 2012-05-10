@@ -21,7 +21,7 @@
 #include "lists/vector.h"
 
 struct copt {
-	
+    
     struct vector * options;
     struct hash * cache;
         
@@ -35,7 +35,7 @@ struct copt {
     char ** (*parse_arr)(struct copt *, char **);
     char ** (*parse)(struct copt *, int, char **);
     char ** (*parse_argv)(struct copt *, int, char **);
-    void	(*reset)(struct copt *);
+    void    (*reset)(struct copt *);
     void    (*free)(struct copt *);
     
 };

@@ -20,7 +20,7 @@
 #include "lists/vector.h"
 
 struct flag {
-	
+    
     int             set;
     int             is_bool;
     char **         flags;
@@ -31,7 +31,7 @@ struct flag {
     void            (*add)(struct flag *, const char *);
     char *          (*get)(struct flag *);
     char **         (*get_all)(struct flag *);
-    void			(*reset)(struct flag *);
+    void            (*reset)(struct flag *);
     void            (*free)(struct flag *);
     
 };

@@ -20,7 +20,7 @@
 #include "lists/vector.h"
 
 struct hash {
-	
+    
     int              size;
     double           factor;
     struct vector ** content;

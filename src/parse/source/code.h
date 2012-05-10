@@ -17,6 +17,6 @@
 
 #pragma once
 
-char * 	pkg_name_from_fname(const char * root, const char * name);
+char *  pkg_name_from_fname(const char * root, const char * name);
 char ** get_deps_from_fname(const char * fname);
 

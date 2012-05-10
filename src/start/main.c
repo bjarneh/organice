@@ -34,31 +34,31 @@
 
 // bool options
 char * bools[] = {
-	"-help",
-	"-list",
-	"-test",
-	"-quiet",
-	"-print",
-	"-clean",
-	"-fancy",
-	"-sort",
-	"-dryrun",
-	"-single",
-	"-static",
-	"-version",
-	"-verbose",
-	NULL,
+    "-help",
+    "-list",
+    "-test",
+    "-quiet",
+    "-print",
+    "-clean",
+    "-fancy",
+    "-sort",
+    "-dryrun",
+    "-single",
+    "-static",
+    "-version",
+    "-verbose",
+    NULL,
 };
 
 // string options
 char * strs[] = {
-	"-src",
-	"-jobs",
-	"-match",
-	"-output",
-	"-testbin",
-	"-backend",
-	NULL,
+    "-src",
+    "-jobs",
+    "-match",
+    "-output",
+    "-testbin",
+    "-backend",
+    NULL,
 };
 
 // option parser (getopt like thing)
@@ -69,20 +69,20 @@ struct dag * dg  = NULL;
 char * testmatch = NULL;
 // special takes multiple arguments
 // link with libraries
-char ** lnk   	 = NULL;
+char ** lnk      = NULL;
 // search for libraries in
-char ** look	 = NULL;
+char ** look     = NULL;
 // unparsed arguments
-char ** args  	 = NULL;
+char ** args     = NULL;
 // simple timer thingy
 struct timer * t = NULL;
 
 
 char * helpmsg[] = {
-	"",
-	"oc - compiler front-end for C\n",
- 	"usage: oc [OPTIONS]\n",
- 	"options:\n",
+    "",
+    "oc - compiler front-end for C\n",
+    "usage: oc [OPTIONS]\n",
+    "options:\n",
     "-h --help      :  print this message and exit",
     "-v --version   :  print version and exit",
     "-d --dryrun    :  print what oc would do",
@@ -101,21 +101,21 @@ char * helpmsg[] = {
     "-T --testbin   :  name of test-binary (default:octest)",
     "-s --src       :  src dir (default: src)",
     "-b --backend   :  back-end [gcc,clang] (default:gcc)\n",
-	"NOTE: legal gcc/clang options can be given\n",
-	NULL,
+    "NOTE: legal gcc/clang options can be given\n",
+    NULL,
 };
 
 
 void init(void){
-	
-	// initialize global map
-	global_init();
+    
+    // initialize global map
+    global_init();
 
-	// initialize timer, and start 'everything'
-	t = new_timer();
-	t->start(t, "all");
-	
-	// create option parser
+    // initialize timer, and start 'everything'
+    t = new_timer();
+    t->start(t, "all");
+    
+    // create option parser
     c = new_copt();
     
     c->bool_option(c, "-h -help --help help");
@@ -140,76 +140,76 @@ void init(void){
     c->str_option_fancy(c, "-s --src");
     c->str_option_fancy(c, "-b --backend");
 
-	// hopefully the source forms a DAG
-	dg = new_dag();
-	
-	// default bool and str flags
-	int i;
-	for(i = 0; bools[i] != NULL; i++){
-		global_set_bool(bools[i], 0);
-	};
+    // hopefully the source forms a DAG
+    dg = new_dag();
+    
+    // default bool and str flags
+    int i;
+    for(i = 0; bools[i] != NULL; i++){
+        global_set_bool(bools[i], 0);
+    };
 
 
-	for(i = 0; strs[i] != NULL; i++){
-		global_set_str_blank(strs[i]);
-	};
-	
-	// -src does not default to '' but to 'src'
-	global_set_str("-src", "src");	
-	// -jobs defaults to 0, i.e. no limit
-	global_set_str("-jobs", "0");	
-	// -backend defaults to 'gcc'
-	global_set_str("-backend", "gcc");	
-	// -testbin defaults to octest[.exe]
-	global_set_str("-testbin", is_windows()? "octest.exe" : "octest");
+    for(i = 0; strs[i] != NULL; i++){
+        global_set_str_blank(strs[i]);
+    };
+    
+    // -src does not default to '' but to 'src'
+    global_set_str("-src", "src");  
+    // -jobs defaults to 0, i.e. no limit
+    global_set_str("-jobs", "0");   
+    // -backend defaults to 'gcc'
+    global_set_str("-backend", "gcc");  
+    // -testbin defaults to octest[.exe]
+    global_set_str("-testbin", is_windows()? "octest.exe" : "octest");
 
 };
 
 void refill_globals(void){
-	
-	int i;
-	char * tmp;
-	
-	for(i = 0; bools[i] != NULL; i++){
-		if(c->is_set(c, bools[i])){
-			global_set_bool(bools[i], 1);
-		}
-	};
+    
+    int i;
+    char * tmp;
+    
+    for(i = 0; bools[i] != NULL; i++){
+        if(c->is_set(c, bools[i])){
+            global_set_bool(bools[i], 1);
+        }
+    };
 
-	for(i = 0; strs[i] != NULL; i++){
-		if(c->is_set(c, strs[i])){
-			tmp = c->get(c, strs[i]);
-			global_set_str(strs[i], tmp);
-			free(tmp);
-		}
-	};
+    for(i = 0; strs[i] != NULL; i++){
+        if(c->is_set(c, strs[i])){
+            tmp = c->get(c, strs[i]);
+            global_set_str(strs[i], tmp);
+            free(tmp);
+        }
+    };
 
-	// special make sure '-src' is clean
-	if(c->is_set(c, "-src")){
-		tmp = path_clean(global_get_str("-src"));
-		global_set_str("-src", tmp);
-		free(tmp);
-	}
-	
-	if(c->is_set(c, "-l")){
+    // special make sure '-src' is clean
+    if(c->is_set(c, "-src")){
+        tmp = path_clean(global_get_str("-src"));
+        global_set_str("-src", tmp);
+        free(tmp);
+    }
+    
+    if(c->is_set(c, "-l")){
 
-		if( lnk ){
-			lnk = add_arr_free(lnk, c->get_all(c, "-l"));
-		}else{
-			lnk = c->get_all(c, "-l");
-		}
+        if( lnk ){
+            lnk = add_arr_free(lnk, c->get_all(c, "-l"));
+        }else{
+            lnk = c->get_all(c, "-l");
+        }
 
-	}
-	
-	if(c->is_set(c, "-L")){
-		if( look ){
-			look = add_arr_free(look, c->get_all(c, "-L"));
-		}else{
-			look = c->get_all(c, "-L");
-		}
-	}
+    }
+    
+    if(c->is_set(c, "-L")){
+        if( look ){
+            look = add_arr_free(look, c->get_all(c, "-L"));
+        }else{
+            look = c->get_all(c, "-L");
+        }
+    }
 
-	c->reset(c);	
+    c->reset(c);    
 };
 
 // opposite of init()
@@ -219,7 +219,7 @@ void endit(void){
     if(! global_get_bool("-quiet") && ! global_get_bool("-dryrun") ){
         t->stop(t, "all");
         double secs = t->seconds(t, "all");
-		printf("time used: %.3fs\n", secs);
+        printf("time used: %.3fs\n", secs);
     }
     t->free(t);
 
@@ -229,7 +229,7 @@ void endit(void){
     dg->free(dg);
     // free global map
     global_free();
-	// free unparsed arguments
+    // free unparsed arguments
     free_strings(args);
     // free link dirs
     free_strings(lnk);
@@ -242,178 +242,178 @@ void endit(void){
 
 void listing(void){
 
-	int i;	
-	char * tmp;
-	
-	for(i = 0; bools[i] != NULL; i++){
-		tmp = (global_get_bool(bools[i]))? "true" : "false";
-		printf("%10s  =>  %s\n", bools[i], tmp);
-	};
-	for(i = 0; strs[i] != NULL; i++){
-		printf("%10s  =>  '%s'\n", strs[i], global_get_str(strs[i]));
-	};
+    int i;  
+    char * tmp;
+    
+    for(i = 0; bools[i] != NULL; i++){
+        tmp = (global_get_bool(bools[i]))? "true" : "false";
+        printf("%10s  =>  %s\n", bools[i], tmp);
+    };
+    for(i = 0; strs[i] != NULL; i++){
+        printf("%10s  =>  '%s'\n", strs[i], global_get_str(strs[i]));
+    };
 
-	if(lnk){
-		printf("%10s  => ", "-l");
-		for(i = 0; lnk[i]; i++){ printf(" '%s'", lnk[i]); }
-		puts("");
-	}
+    if(lnk){
+        printf("%10s  => ", "-l");
+        for(i = 0; lnk[i]; i++){ printf(" '%s'", lnk[i]); }
+        puts("");
+    }
 
-	if(look){
-		printf("%10s  => ", "-L");
-		for(i = 0; look[i]; i++){ printf(" '%s'", look[i]); }
-		puts("");
-	}
+    if(look){
+        printf("%10s  => ", "-L");
+        for(i = 0; look[i]; i++){ printf(" '%s'", look[i]); }
+        puts("");
+    }
 
-	if(args){
-		printf("%10s  => ", "xargs");
-		for(i = 0; args[i]; i++){ printf(" '%s'", args[i]); }
-		puts("");
-	}
-	
-	exit(0);
+    if(args){
+        printf("%10s  => ", "xargs");
+        for(i = 0; args[i]; i++){ printf(" '%s'", args[i]); }
+        puts("");
+    }
+    
+    exit(0);
 
 };
 
 
 void usage(int code){
 
-	int i;
-	FILE * fd = stdout;
+    int i;
+    FILE * fd = stdout;
 
-	if(code){ fd = stderr; }
-	
-	for(i = 0; helpmsg[i] != NULL; i++){
-		fprintf(fd, "  %s\n", helpmsg[i]);
-	}
+    if(code){ fd = stderr; }
+    
+    for(i = 0; helpmsg[i] != NULL; i++){
+        fprintf(fd, "  %s\n", helpmsg[i]);
+    }
 
-	exit(code);
+    exit(code);
 
 };
 
 void parse_this_config(const char * fname){
 
-	if(is_file(fname)){
-		char ** argv = config2args(fname);
-		if(argv){
-			char ** xargs = c->parse_arr(c, argv);
+    if(is_file(fname)){
+        char ** argv = config2args(fname);
+        if(argv){
+            char ** xargs = c->parse_arr(c, argv);
             args = add_arr_free(args, xargs);
-			refill_globals();
-			free_strings(argv);
-		}
-	}
+            refill_globals();
+            free_strings(argv);
+        }
+    }
 };
 
 void parse_config(){
 
-	char * home = getenv(get_home_env());
-	char * pwd  = getenv("PWD");
-	char * xdg  = getenv("XDG_CONFIG_HOME");
-	char * tmp;
-	
-	// ${XDG_CONFIG_HOME}/oc/ocrc
-	if(is_windows() && xdg){
-		tmp = add_str(xdg, "/oc/ocrc");
-		parse_this_config(tmp);
-		free(tmp);
-	}
+    char * home = getenv(get_home_env());
+    char * pwd  = getenv("PWD");
+    char * xdg  = getenv("XDG_CONFIG_HOME");
+    char * tmp;
+    
+    // ${XDG_CONFIG_HOME}/oc/ocrc
+    if(is_windows() && xdg){
+        tmp = add_str(xdg, "/oc/ocrc");
+        parse_this_config(tmp);
+        free(tmp);
+    }
 
-	if(home){
-		// ${HOME}/.config/oc/ocrc
-		tmp = path_from_slash(add_str(home, "/.config/oc/ocrc"));
-		parse_this_config(tmp);
-		free(tmp);
+    if(home){
+        // ${HOME}/.config/oc/ocrc
+        tmp = path_from_slash(add_str(home, "/.config/oc/ocrc"));
+        parse_this_config(tmp);
+        free(tmp);
 
-		// ${HOME}/.ocrc
-		tmp = path_from_slash(add_str(home, "/.ocrc"));
-		parse_this_config(tmp);
-		free(tmp);
-	};
-	
-	if(pwd){
-		// ${PWD}/.ocrc
-		tmp = path_from_slash(add_str(pwd, "/.ocrc"));
-		parse_this_config(tmp);
-		free(tmp);
-		
-		// ${PWD}/ocrc
-		tmp = path_from_slash(add_str(pwd, "/ocrc"));
-		parse_this_config(tmp);
-		free(tmp);
-	};
+        // ${HOME}/.ocrc
+        tmp = path_from_slash(add_str(home, "/.ocrc"));
+        parse_this_config(tmp);
+        free(tmp);
+    };
+    
+    if(pwd){
+        // ${PWD}/.ocrc
+        tmp = path_from_slash(add_str(pwd, "/.ocrc"));
+        parse_this_config(tmp);
+        free(tmp);
+        
+        // ${PWD}/ocrc
+        tmp = path_from_slash(add_str(pwd, "/ocrc"));
+        parse_this_config(tmp);
+        free(tmp);
+    };
 
 };
 
 
 int main(int argc, char ** argv){
 
-	// allocate resources
-	init();
-	
-	// parse configuration files
-	parse_config();
+    // allocate resources
+    init();
+    
+    // parse configuration files
+    parse_config();
 
-	// parse command line arguments
+    // parse command line arguments
     char ** xargs = c->parse_argv(c, argc, argv);
     args = add_arr_free(args, xargs);
     refill_globals();
     
-	// simple commands (i.e. print stuff)
-	if(global_get_bool("-list")){ listing(); }
-	if(global_get_bool("-help")){ usage(EXIT_SUCCESS); }
-	if(global_get_bool("-version")){
-		puts("oc 1.0");
-		exit(EXIT_SUCCESS); 
-	}
-	
-	// allow first non-option to be src-dir
-	if(args && is_dir(args[0]) ){
-		global_set_str_nodup("-src", path_clean(args[0]));
-		args = shift_strs(args);
-	}
-	
-	// exit with full help message
-	if( ! is_dir(global_get_str("-src")) ){
-		fprintf(stderr, "'%s' : not a directory\n", global_get_str("-src"));
-		usage(EXIT_FAILURE);
-	};
+    // simple commands (i.e. print stuff)
+    if(global_get_bool("-list")){ listing(); }
+    if(global_get_bool("-help")){ usage(EXIT_SUCCESS); }
+    if(global_get_bool("-version")){
+        puts("oc 1.0");
+        exit(EXIT_SUCCESS); 
+    }
+    
+    // allow first non-option to be src-dir
+    if(args && is_dir(args[0]) ){
+        global_set_str_nodup("-src", path_clean(args[0]));
+        args = shift_strs(args);
+    }
+    
+    // exit with full help message
+    if( ! is_dir(global_get_str("-src")) ){
+        fprintf(stderr, "'%s' : not a directory\n", global_get_str("-src"));
+        usage(EXIT_FAILURE);
+    };
 
-	// pathwalk (-src) + parse imports
-	dg->parse(dg);
+    // pathwalk (-src) + parse imports
+    dg->parse(dg);
 
-	// info about dependencies and so on for each package	
-	if(global_get_bool("-print")){	dg->print(dg); exit(EXIT_SUCCESS); }
+    // info about dependencies and so on for each package   
+    if(global_get_bool("-print")){  dg->print(dg); exit(EXIT_SUCCESS); }
 
-	// build dependency graph
-	dg->build(dg, args);
+    // build dependency graph
+    dg->build(dg, args);
 
-	// for debugging
-	if(global_get_bool("-fancy")){	dg->fancy(dg); exit(EXIT_SUCCESS);  }
-	// remove objects
-	if(global_get_bool("-clean")){	dg->clean(dg); exit(EXIT_SUCCESS);  }
+    // for debugging
+    if(global_get_bool("-fancy")){  dg->fancy(dg); exit(EXIT_SUCCESS);  }
+    // remove objects
+    if(global_get_bool("-clean")){  dg->clean(dg); exit(EXIT_SUCCESS);  }
 
 
-	// get legal compile order (loop check)
-	dg->topsort(dg);
+    // get legal compile order (loop check)
+    dg->topsort(dg);
 
-	// print packages in legal compile order
-	if(global_get_bool("-sort")){	dg->sort(dg); exit(EXIT_SUCCESS); }
-	
-	if(global_get_bool("-test")){
-		testmatch = dg->add_test(dg, args);
-	}
-	
-	// the default is to run each command in parallel
-	if(! global_get_bool("-dryrun") && !global_get_bool("-single") ){
-		dg->pcompile(dg); // parallel compile
-	}else{
-		dg->compile(dg);
-	}
+    // print packages in legal compile order
+    if(global_get_bool("-sort")){   dg->sort(dg); exit(EXIT_SUCCESS); }
+    
+    if(global_get_bool("-test")){
+        testmatch = dg->add_test(dg, args);
+    }
+    
+    // the default is to run each command in parallel
+    if(! global_get_bool("-dryrun") && !global_get_bool("-single") ){
+        dg->pcompile(dg); // parallel compile
+    }else{
+        dg->compile(dg);
+    }
 
     // link main package of generated test code
     if(global_get_bool("-test")){
 
-		dg->link(dg, global_get_str("-testbin"), testmatch, look, lnk);
+        dg->link(dg, global_get_str("-testbin"), testmatch, look, lnk);
 
         if(! global_get_bool("-quiet") ){
             int verb = global_get_bool("-verbose");
@@ -441,14 +441,14 @@ int main(int argc, char ** argv){
         free(path_to_testbin);
     }
 
-	// if output is given try to link main package
-	if(! eq_str("", global_get_str("-output"))){
-	    dg->link(dg, global_get_str("-output"), global_get_str("-match"), look, lnk);
-	}
-	
-	// free resources
-	endit();
-	
+    // if output is given try to link main package
+    if(! eq_str("", global_get_str("-output"))){
+        dg->link(dg, global_get_str("-output"), global_get_str("-match"), look, lnk);
+    }
+    
+    // free resources
+    endit();
+    
     return 0;
 };
 

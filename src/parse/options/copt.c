@@ -53,9 +53,9 @@ struct copt * new_copt(void){
     c->get              = &copt_get;
     c->get_all          = &copt_get_all;
     c->parse            = &copt_parse;
-    c->parse_arr		= &copt_parse_arr;
+    c->parse_arr        = &copt_parse_arr;
     c->parse_argv       = &copt_parse_argv;
-    c->reset			= &copt_reset;
+    c->reset            = &copt_reset;
     c->free             = &copt_free;
     return c;
 };
@@ -132,9 +132,9 @@ static void copt_register_option(struct copt * slf, struct flag * f){
 };
 
 static char ** copt_parse_arr(struct copt * slf, char ** argv){
-	int i;
-	for(i = 0; argv[i]; i++);
-	return slf->parse(slf, i, argv);
+    int i;
+    for(i = 0; argv[i]; i++);
+    return slf->parse(slf, i, argv);
 };
 
 static char ** copt_parse_argv(struct copt * slf, int n, char ** argv){
@@ -264,17 +264,17 @@ static char * juxta_str(struct copt * slf, char * opt){
 
 
 static void copt_reset(struct copt * slf){
-	
+    
     int i;
     struct flag * f;
     char ** keyz = slf->cache->keys(slf->cache);
     
-	for(i = 0; keyz[i]; i++){
-		f = (struct flag *) slf->cache->get(slf->cache, keyz[i]);
-		f->reset(f);
-	}
-	
-	free(keyz);
+    for(i = 0; keyz[i]; i++){
+        f = (struct flag *) slf->cache->get(slf->cache, keyz[i]);
+        f->reset(f);
+    }
+    
+    free(keyz);
 };
 
 static void copt_free(struct copt * slf){

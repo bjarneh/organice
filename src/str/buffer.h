@@ -18,14 +18,14 @@
 #pragma once
 
 struct buffer {
-	
+    
     int     cap;
     int     len;
     char *  _;
     
     void    (*add)(struct buffer *, const char *);
     void    (*add_len)(struct buffer *, int, const char *);
-    void	(*add_char)(struct buffer *, char);
+    void    (*add_char)(struct buffer *, char);
     void    (*clear)(struct buffer *); 
     char *  (*str)(struct buffer *);
     void    (*free)(struct buffer *);

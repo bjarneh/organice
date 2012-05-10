@@ -28,41 +28,41 @@
 
 //TODO use SRCROOT variable here
 int test_is_dir(int verbose){
-	int ok = 1;
-	assert_log(is_dir("src/parse"), verbose, "src/parse ! dir", &ok);
-	assert_log(!is_dir("src/lskdjf"), verbose, "src/lskdjf dir?", &ok);
-	return ok;
+    int ok = 1;
+    assert_log(is_dir("src/parse"), verbose, "src/parse ! dir", &ok);
+    assert_log(!is_dir("src/lskdjf"), verbose, "src/lskdjf dir?", &ok);
+    return ok;
 };
 
 //TODO use SRCROOT variable here
 int test_is_file(int verbose){
-	int ok = 1;
-	assert_log(is_file("src/start/main.c"), verbose, "main.c not file?", &ok);
-	assert_log(!is_file("sldkfj"), verbose, "sldkjf is file?", &ok);
-	return ok;
+    int ok = 1;
+    assert_log(is_file("src/start/main.c"), verbose, "main.c not file?", &ok);
+    assert_log(!is_file("sldkfj"), verbose, "sldkjf is file?", &ok);
+    return ok;
 };
 
 int test_timer(int verbose){
 
-	int ok = 1;
-	
-	struct timespec * ts = calloc(1, sizeof(struct timespec));
+    int ok = 1;
+    
+    struct timespec * ts = calloc(1, sizeof(struct timespec));
 
-	ts->tv_sec  = 0;
-	ts->tv_nsec = 5000000;
-	
-	struct timer * t = new_timer();
+    ts->tv_sec  = 0;
+    ts->tv_nsec = 5000000;
+    
+    struct timer * t = new_timer();
 
-	t->start(t, "whatever");
-	
-	// only if nano sleep works can we work out something here
-	if(nanosleep(ts, NULL) == 0){
-		t->stop(t, "whatever");
-		long millis = t->millis(t, "whatever");
-		assert_log(millis > 0 && millis < 10,verbose,"timer ! [0,10]", &ok);
-	}
-	
-	return ok;
-	
+    t->start(t, "whatever");
+    
+    // only if nano sleep works can we work out something here
+    if(nanosleep(ts, NULL) == 0){
+        t->stop(t, "whatever");
+        long millis = t->millis(t, "whatever");
+        assert_log(millis > 0 && millis < 10,verbose,"timer ! [0,10]", &ok);
+    }
+    
+    return ok;
+    
 };
 

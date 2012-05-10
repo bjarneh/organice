@@ -229,7 +229,7 @@ static void hash_print(struct hash * slf, char * (* val2str)(void *)){
 
 static char * hash_str(struct hash * slf, char * (* val2str)(void *)){
 
-    int i 	          = 0;
+    int i             = 0;
     char ** k         = slf->keys(slf);
     char * retval;
     struct buffer * b = new_buffer();
@@ -237,10 +237,10 @@ static char * hash_str(struct hash * slf, char * (* val2str)(void *)){
     b->add(b, "hash{\n");
     for(i = 0; k[i] != NULL; i++){
         b->add(b,"  ");
-		b->add(b, k[i]);
-		b->add(b, " => ");
-		b->add(b, val2str(slf->get(slf, k[i])));
-		b->add(b, "\n");
+        b->add(b, k[i]);
+        b->add(b, " => ");
+        b->add(b, val2str(slf->get(slf, k[i])));
+        b->add(b, "\n");
     };
     b->add(b, "}\n");
     

@@ -60,7 +60,7 @@ static struct flag * new_flag(const char * optstr){
     f->add        = &flag_add;
     f->get        = &flag_get;
     f->get_all    = &flag_get_all;
-    f->reset	  = &flag_reset;
+    f->reset      = &flag_reset;
     f->free       = &flag_free;
 
     return f;
@@ -80,16 +80,16 @@ static int flag_is_set(struct flag * slf){
 };
 
 static void flag_reset(struct flag * slf){
-	
-	if( slf->is_bool){
-		slf->set = 0;
-	}else{
-		int i;
-		for(i = 0; i < slf->options->len; i++){
-			free( slf->options->_[i] );
-		};
-		slf->options->clear(slf->options);
-	}
+    
+    if( slf->is_bool){
+        slf->set = 0;
+    }else{
+        int i;
+        for(i = 0; i < slf->options->len; i++){
+            free( slf->options->_[i] );
+        };
+        slf->options->clear(slf->options);
+    }
 };
 
 // return allocated copy to be able to free copt/flags

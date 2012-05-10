@@ -21,5 +21,5 @@ char ** path_split(const char *);
 char *  path_join(const char **);
 char *  path_join_len(const char **, int);
 char *  path_clean(const char *);
-char *	path_from_slash(char *);
+char *  path_from_slash(char *);
 

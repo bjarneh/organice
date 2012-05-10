@@ -16,9 +16,9 @@
 // -----------------------------------------------------------------------
 
 #if ( defined _WIN32 ||  defined WIN32 )
-	#include <windows.h>
+    #include <windows.h>
 #else
-	#include <stdlib.h>
+    #include <stdlib.h>
 #endif
 
 
@@ -26,21 +26,21 @@
 
 //     Windows
 #if ( defined _WIN32 ||  defined WIN32 )
-char * my_dir_sep         	= "\\";
-char   my_dir_sep_char		= '\\';
-char * my_path_sep        	= ";";
-char   my_path_sep_char   	= ';';
-char * my_os_name			= "windows";
-int	   my_is_windows		= 1;
-char * my_home_env			= "USERPROFILE";
+char * my_dir_sep           = "\\";
+char   my_dir_sep_char      = '\\';
+char * my_path_sep          = ";";
+char   my_path_sep_char     = ';';
+char * my_os_name           = "windows";
+int    my_is_windows        = 1;
+char * my_home_env          = "USERPROFILE";
 #else  // Linux/Unix
-char * my_dir_sep         	= "/";
-char   my_dir_sep_char    	= '/';
-char * my_path_sep         	= ":";
-char   my_path_sep_char    	= ':';
-char * my_os_name			= "*nix";
-int	   my_is_windows		= 0;
-char * my_home_env			= "HOME";
+char * my_dir_sep           = "/";
+char   my_dir_sep_char      = '/';
+char * my_path_sep          = ":";
+char   my_path_sep_char     = ':';
+char * my_os_name           = "*nix";
+int    my_is_windows        = 0;
+char * my_home_env          = "HOME";
 #endif
 
 char * dir_sep(void){ return my_dir_sep; }
@@ -51,9 +51,9 @@ char * os_name(void);
 char * get_home_env(void){ return my_home_env; }
 
 int is_windows(void){
-	return my_is_windows;
+    return my_is_windows;
 };
 
-int	run(const char * cmd){
-	return system(cmd);
+int run(const char * cmd){
+    return system(cmd);
 };

@@ -70,7 +70,7 @@ static void buffer_add(struct buffer * slf, const char * s){
 };
 
 static void buffer_add_char(struct buffer * slf, char c){
-	
+    
     if( 1 + slf->len >= slf->cap ){
         buffer_twice(slf);
     }

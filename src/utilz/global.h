@@ -17,12 +17,12 @@
 
 #pragma once
 
-void	global_init(void);
-char *	global_get_str(const char *);
-void	global_set_str(const char *, const char *);
-void	global_set_str_nodup(const char *, char *);
-void	global_set_str_blank(const char *);
-int		global_get_bool(const char *);
-void	global_set_bool(const char *, int);
-void	global_free(void);
+void    global_init(void);
+char *  global_get_str(const char *);
+void    global_set_str(const char *, const char *);
+void    global_set_str_nodup(const char *, char *);
+void    global_set_str_blank(const char *);
+int     global_get_bool(const char *);
+void    global_set_bool(const char *, int);
+void    global_free(void);
 

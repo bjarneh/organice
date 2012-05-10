@@ -43,7 +43,7 @@ struct vector * new_vector_size(int size){
     v->_          = calloc(size, sizeof(void *));
     v->at         = &vector_at;
     v->add        = &vector_add;
-    v->pop		  = &vector_pop;
+    v->pop        = &vector_pop;
     v->add_vector = &vector_add_vec;
     v->to_array   = &vector_to_array;
     v->free       = &vector_del;
@@ -68,8 +68,8 @@ static int vector_add(struct vector * slf, void * e) {
 };
 
 static void * vector_pop(struct vector * slf){
-	slf->len -= 1;
-	return slf->_[slf->len];
+    slf->len -= 1;
+    return slf->_[slf->len];
 };
 
 static int vector_add_vec(struct vector * slf, struct vector * other){

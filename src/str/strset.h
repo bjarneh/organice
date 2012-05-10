@@ -20,17 +20,17 @@
 #include "map/hash.h"
 
 struct strset {
-	
-	int dummy;
-	struct hash * map;
-	
-	void	(*add)(struct strset *, const char *);
-	void	(*remove)(struct strset *, const char *);
-	int		(*has)(struct strset *, const char *);
-	char ** (*to_array)(struct strset *);
-	void	(*clear)(struct strset *);
-	void	(*free)(struct strset *);
-	
+    
+    int dummy;
+    struct hash * map;
+    
+    void    (*add)(struct strset *, const char *);
+    void    (*remove)(struct strset *, const char *);
+    int     (*has)(struct strset *, const char *);
+    char ** (*to_array)(struct strset *);
+    void    (*clear)(struct strset *);
+    void    (*free)(struct strset *);
+    
 };
 
 struct strset * new_strset(void);
