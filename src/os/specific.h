@@ -26,4 +26,6 @@ char *  get_home_env(void);
 char *  os_name(void);
 int     is_windows(void);
 int     run(const char *);
+int     os_unlink(const char *);
+int     os_rmdir(const char *);
 

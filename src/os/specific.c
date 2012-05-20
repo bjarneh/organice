@@ -17,7 +17,9 @@
 
 #if ( defined _WIN32 ||  defined WIN32 )
     #include <windows.h>
+    #include <stdio.h>
 #else
+    #include <unistd.h>
     #include <stdlib.h>
 #endif
 
@@ -56,4 +58,16 @@ int is_windows(void){
 
 int run(const char * cmd){
     return system(cmd);
+};
+
+int os_rmdir(const char * name){
+#if ( defined _WIN32 ||  defined WIN32 )
+    return _rmdir(name);
+#else
+    return rmdir(name);
+#endif
+};
+
+int os_unlink(const char * name){
+    return unlink(name);
 };

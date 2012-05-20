@@ -17,7 +17,6 @@
  
 
 #include <time.h>
-#include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -483,7 +482,7 @@ static void dag_clean(struct dag * slf){
                 if(! silent){
                     printf("rm: %s\n", pk->o_file);
                 }
-                rv = unlink(pk->o_file);
+                rv = os_unlink(pk->o_file);
                 if(rv){
                     perror(pk->o_file);
                     panic("failed to delete file", __FILE__, __LINE__);
@@ -636,13 +635,13 @@ static void dag_unlink_test(struct dag * slf, char * tstamp){
     // we can assume all is fine if this is ok
     if( starts_with( pk->name, tstamp) ){
 
-        fail = unlink(pk->c_file);
+        fail = os_unlink(pk->c_file);
         if(fail){
             perror(pk->c_file);
             panic(NULL, __FILE__, __LINE__);
         }
 
-        fail = unlink(pk->o_file);
+        fail = os_unlink(pk->o_file);
         if(fail){
             perror(pk->o_file);
             panic(NULL, __FILE__, __LINE__);
@@ -654,7 +653,7 @@ static void dag_unlink_test(struct dag * slf, char * tstamp){
     testdir[1] = tstamp;
 
     char * testpath = path_join_len(testdir, 2);
-    fail = rmdir(testpath);
+    fail = os_rmdir(testpath);
     if(fail){
         perror(testpath);
         panic(NULL,__FILE__,__LINE__);
@@ -663,7 +662,7 @@ static void dag_unlink_test(struct dag * slf, char * tstamp){
     free(testpath);
 
     if(is_file(global_get_str("-testbin"))){
-        fail = unlink(global_get_str("-testbin"));
+        fail = os_unlink(global_get_str("-testbin"));
         if(fail){
             perror(global_get_str("-testbin"));
             panic(NULL,__FILE__,__LINE__);

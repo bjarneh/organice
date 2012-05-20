@@ -23,7 +23,7 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <unistd.h>
+#include <unistd.h> //TODO stuff all Unix/Windows related stuff in os/specific
 
 #include "str/buffer.h"
 #include "str/stringutil.h"
